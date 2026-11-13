@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "guaxan-plugins",
+  "description": "Plugins de Claude Code do Nathan",
+  "owner": {
+    "name": "Nathan"
+  },
+  "plugins": [
+    {
+      "name": "equipe-dev",
+      "description": "Equipe senior/dev/QA/DBA: sessao principal orquestra e revisa, subagentes implementam, testam e cuidam do banco com codigo enxuto.",
+      "source": "./equipe-dev",
+      "category": "development"
+    },
+    {
+      "name": "gemini-agent",
+      "description": "Roda o Gemini (agy) como agente: passos ao vivo num painel e ciclo de perguntas respondidas pelo Claude ou pelo usuario.",
+      "source": "./gemini-agent",
+      "category": "development"
+    }
+  ]
+}

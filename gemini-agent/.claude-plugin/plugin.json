@@ -1,0 +1,7 @@
+{
+  "name": "gemini-agent",
+  "version": "0.1.1",
+  "description": "Roda o Gemini (agy) como agente: passos ao vivo num painel e ciclo de perguntas respondidas pelo Claude ou pelo usuário",
+  "author": { "name": "Nathan" },
+  "types": "./types/index.d.ts"
+}
