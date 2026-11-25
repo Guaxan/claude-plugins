@@ -36,9 +36,10 @@ Trabalho delegado em cima de entendimento errado e o maior desperdicio da equipe
   - **pleno** (`equipe-dev:pleno`): exige ler codigo, entender padrao, decidir implementacao local.
   - **dba** (`equipe-dev:dba`): so quando a tarefa toca schema, migration, query pesada, indice ou migracao de dados. Migration critica em dado de producao: `model: opus`.
   - **qa** (`equipe-dev:qa`): verificacao de entrega com comportamento observavel (secao 5). Nao implementa.
+  - **seguranca** (`equipe-dev:seguranca`): revisao de seguranca de entrega em area sensivel, ou auditoria pedida pelo usuario (secao 5). Nao corrige.
   - **especialista existente**: se houver agente especializado que encaixe (ex.: `mobile-ux-ui` para telas mobile), contrate-o como pleno, com o mesmo molde.
 - Senior existe um so: voce. O nivel de cada papel (junior/pleno) e definido na contratacao por `model` + `effort`. Ex.: QA junior = `model: haiku` rodando roteiro pronto; QA pleno = padrao (Sonnet) desenhando casos de borda e escrevendo testes.
-- Nao ha hierarquia obrigatoria: contrate junior direto quando a tarefa for simples. O pleno tambem pode contratar junior para subtarefa mecanica dentro da tarefa dele e responde pela revisao dessa entrega. Junior, QA e DBA nao contratam ninguem.
+- Nao ha hierarquia obrigatoria: contrate junior direto quando a tarefa for simples. O pleno tambem pode contratar junior para subtarefa mecanica dentro da tarefa dele e responde pela revisao dessa entrega. Junior, QA, DBA e seguranca nao contratam ninguem.
 - Na duvida entre junior e pleno, escolha pelo risco: erro barato de detectar na revisao -> junior; erro sutil -> pleno.
 - Junior primeiro: antes de mandar ao pleno, veja se a tarefa (ou parte dela) e mecanica e cabe numa instrucao com exemplo pronto. Correcao pequena apontada pelo QA com `arquivo:linha` e o que esperado, ajuste repetitivo em varios arquivos, aplicar um padrao que voce ja mostrou: junior.
 - Pesquisa e exploracao dentro do modo equipe: junior ou pleno, nunca `general-purpose` ou `Explore` em Opus. Se usar `Explore`, passe `model: haiku`.
@@ -99,6 +100,7 @@ Esta skill autoriza e exige passar o parametro `effort` na chamada do Agent em t
 Regras:
 - `high` ou acima so com motivo concreto da tabela no campo ESFORCO. Sem motivo, `medium`. "Tarefa grande" nao e motivo: quebre a tarefa em vez de subir o esforco.
 - `low` nunca em tarefa que edita arquivo, de nenhum papel.
+- Seguranca: `medium` por padrao. `high` em autenticacao/permissao, pagamento, ou auditoria de area inteira.
 - QA: `medium` por padrao. `high` so no QA final de ponta a ponta de um conjunto grande ou em fluxo de dinheiro/seguranca.
 - Junior nunca acima de `medium`. Se precisa de mais, a tarefa e de pleno.
 - `max` nao se usa em subagente.
@@ -121,7 +123,7 @@ Meta: manter de 3 a 5 agentes rodando enquanto houver tarefa liberada; teto de 5
 
 Nao bloqueie a sessao principal: teste de navegador, roteiro de screenshots e bateria longa de testes vao para QA ou junior; comando demorado que voce mesmo precisa rodar vai em segundo plano. Voce fica livre para reagir a cada entrega.
 
-Cada agente tem teto de turnos (pleno 80, DBA 60, QA 60, junior 30). Agente que bateu no teto devolve trabalho parcial: retome pelo SendMessage se falta pouco; se falta muito, a tarefa estava grande demais - quebre e contrate de novo.
+Cada agente tem teto de turnos (pleno 80, DBA 60, QA 60, seguranca 60, junior 30). Agente que bateu no teto devolve trabalho parcial: retome pelo SendMessage se falta pouco; se falta muito, a tarefa estava grande demais - quebre e contrate de novo.
 
 Toda especificacao segue este molde (o subagente so sabe o que voce escrever):
 
@@ -166,6 +168,21 @@ Entrega com comportamento observavel (tela, API, regra de negocio, fluxo do usua
 - QA reprovou: bugs vao ao dev como retrabalho (`arquivo:linha` ou passos de reproducao do QA). Depois da correcao, reteste so os bugs reportados.
 - QA aprovou: voce ainda revisa o diff. QA verifica comportamento; voce verifica codigo.
 
+### Seguranca
+
+**Revisao (automatica):** contrate `equipe-dev:seguranca` sem esperar o usuario pedir quando a entrega toca autenticacao ou permissao, entrada do usuario que vai para banco/HTML/shell/arquivo/URL, upload, SQL novo ou alterado, pagamento ou dinheiro, integracao externa ou webhook, ou quando o usuario pede deploy de algo assim. Escopo: os arquivos da entrega (diff). Roda em paralelo com o QA, nao depois dele. Pule em mudanca so visual, texto ou config sem segredo.
+
+**Auditoria (so quando o usuario pedir):** varredura de area ou do projeto. Quebre por area (ex.: API publica, upload e midia, painel administrativo, integracoes) e contrate um agente por area, em paralelo. Diga em ESCOPO se ha ambiente local para teste de ataque e o que nao pode ser tocado.
+
+Passe no PERFIL a stack e onde ficam autenticacao, acesso a dados e uploads; o agente precisa disso para escolher o que procurar.
+
+**Triagem dos achados (sua):**
+- Confianca baixa ou media: confira o `arquivo:linha` antes de mandar corrigir.
+- Critica e alta: correcao obrigatoria antes de fechar ou fazer deploy. Viram tarefa no quadro para pleno (ou junior, se a correcao for mecanica e o achado ja diz o que mudar), com o achado inteiro em CONTEXTO e o teste do achado em PRONTO QUANDO.
+- Media e baixa: liste ao usuario no fechamento com a recomendacao; ele decide.
+- Depois da correcao, contrate seguranca de novo so para conferir os achados corrigidos (escopo: os SEG-n e os arquivos alterados).
+- Achado de dependencia: atualizar pacote e mudanca com risco de quebra; trate como tarefa com teste, nao como ajuste rapido.
+
 ### Sua revisao
 
 Leia o diff real (`git diff` ou os arquivos), nao so o relatorio. Checklist:
@@ -184,7 +201,7 @@ Resultado:
 
 ## 6. Fechar
 
-Rode a verificacao final do conjunto (testes, build). Reporte ao usuario: o que mudou, quem fez o que (curto), resultado real da verificacao e do QA, pendencias. Scripts de banco que o DBA entregou sem executar: liste com o rollback, para o usuario rodar.
+Rode a verificacao final do conjunto (testes, build). Reporte ao usuario: o que mudou, quem fez o que (curto), resultado real da verificacao e do QA, pendencias. Scripts de banco que o DBA entregou sem executar: liste com o rollback, para o usuario rodar. Achados de seguranca: diga quais foram corrigidos e conferidos, e liste os medios/baixos em aberto com a recomendacao.
 
 Escreva o relatorio para um leitor inteligente que nao viu o trabalho: nao viu as chamadas de ferramenta, os relatorios dos agentes nem os arquivos abertos. Pontos principais nas primeiras frases. Frases curtas, uma ideia por frase, palavras simples. Nao use termos que surgiram durante o trabalho (nomes de perfil, de agente, apelidos de tarefa) sem dizer o que sao. Detalhe so o que o usuario precisa para decidir ou agir.
 
@@ -206,5 +223,7 @@ Escreva o relatorio para um leitor inteligente que nao viu o trabalho: nao viu a
 - Aprovar sem ler o diff.
 - Passar ao QA o relatorio do dev em vez da especificacao original.
 - Contratar DBA para tarefa que nao toca o banco.
+- Entregar ou fazer deploy de mudanca em area sensivel sem revisao de seguranca, ou com achado critico/alto em aberto.
+- Pedir ao agente de seguranca que corrija o codigo.
 - Aceitar codigo inflado porque "funciona".
 - Repassar ao usuario conclusao de subagente sem conferir.

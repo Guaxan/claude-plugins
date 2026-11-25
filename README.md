@@ -4,7 +4,7 @@ Marketplace de plugins para o Claude Code.
 
 | Plugin | O que faz |
 |---|---|
-| `equipe-dev` | A sessão principal vira o senior: planeja, contrata subagentes (pleno no Sonnet, junior no Haiku, QA e DBA) e revisa cada entrega com regras de código enxuto. Comandos: `/equipe-dev:planejar` (debater e fechar uma ideia num documento) e `/equipe-dev:orquestrar` (desenvolver; aceita o documento: `/equipe-dev:orquestrar docs/ideias/<nome>.md`). |
+| `equipe-dev` | A sessão principal vira o senior: planeja, contrata subagentes (pleno no Sonnet, junior no Haiku, QA, DBA e segurança) e revisa cada entrega com regras de código enxuto. Comandos: `/equipe-dev:planejar` (debater e fechar uma ideia num documento) e `/equipe-dev:orquestrar` (desenvolver; aceita o documento: `/equipe-dev:orquestrar docs/ideias/<nome>.md`). |
 | `gemini-agent` | Roda o Gemini (CLI `agy`) como subagente, com os passos ao vivo no painel `/gemini`. Requer o `agy` instalado e logado. |
 
 ## Instalar

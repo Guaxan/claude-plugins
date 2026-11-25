@@ -1,6 +1,6 @@
 {
   "name": "equipe-dev",
-  "description": "Equipe senior/dev/QA/DBA: sessao principal orquestra e revisa, subagentes baratos implementam, testam e cuidam do banco com regras de codigo enxuto.",
-  "version": "0.8.0",
+  "description": "Equipe senior/dev/QA/DBA/seguranca: sessao principal orquestra e revisa, subagentes baratos implementam, testam e cuidam do banco com regras de codigo enxuto.",
+  "version": "0.9.0",
   "author": { "name": "Nathan" }
 }

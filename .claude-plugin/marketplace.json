@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "equipe-dev",
-      "description": "Equipe senior/dev/QA/DBA: sessao principal orquestra e revisa, subagentes implementam, testam e cuidam do banco com codigo enxuto.",
+      "description": "Equipe senior/dev/QA/DBA/seguranca: sessao principal orquestra e revisa, subagentes implementam, testam e cuidam do banco com codigo enxuto.",
       "source": "./equipe-dev",
       "category": "development"
     },
