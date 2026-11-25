@@ -37,7 +37,12 @@ Trabalho delegado em cima de entendimento errado e o maior desperdicio da equipe
   - **dba** (`equipe-dev:dba`): so quando a tarefa toca schema, migration, query pesada, indice ou migracao de dados. Migration critica em dado de producao: `model: opus`.
   - **qa** (`equipe-dev:qa`): verificacao de entrega com comportamento observavel (secao 5). Nao implementa.
   - **seguranca** (`equipe-dev:seguranca`): revisao de seguranca de entrega em area sensivel, ou auditoria pedida pelo usuario (secao 5). Nao corrige.
-  - **especialista existente**: se houver agente especializado que encaixe (ex.: `mobile-ux-ui` para telas mobile), contrate-o como pleno, com o mesmo molde.
+  - **tela / UX** (layout, componentes visuais, usabilidade, responsividade): escolha o primeiro disponivel na lista de agentes do seu prompt:
+    1. `gemini-agent:gemini` (Gemini via CLI `agy`). Prompt com `@cwd: <pasta do projeto>` na primeira linha e a especificacao no molde de sempre. Ele pode ter comandos de terminal bloqueados: nao conte com a verificacao dele, contrate junior para typecheck e screenshots. Terminou com `needs_input`: responda pelo SendMessage. Erro de execucao (agy ausente, login expirado, falha ao iniciar): nao insista, siga para a opcao 2 e avise o usuario uma vez.
+    2. Especialista de UI que exista na lista (ex.: `mobile-ux-ui` para telas mobile).
+    3. `equipe-dev:pleno` com perfil de UI (HARD SKILLS de design system do projeto, NAO USAR com padroes visuais a evitar, SKILLS A CARREGAR com a de navegador para screenshots).
+    Logica de frontend sem decisao visual (estado, integracao com API, tipos): pleno direto.
+  - **especialista existente**: se houver agente especializado que encaixe em outra area, contrate-o como pleno, com o mesmo molde.
 - Senior existe um so: voce. O nivel de cada papel (junior/pleno) e definido na contratacao por `model` + `effort`. Ex.: QA junior = `model: haiku` rodando roteiro pronto; QA pleno = padrao (Sonnet) desenhando casos de borda e escrevendo testes.
 - Nao ha hierarquia obrigatoria: contrate junior direto quando a tarefa for simples. O pleno tambem pode contratar junior para subtarefa mecanica dentro da tarefa dele e responde pela revisao dessa entrega. Junior, QA, DBA e seguranca nao contratam ninguem.
 - Na duvida entre junior e pleno, escolha pelo risco: erro barato de detectar na revisao -> junior; erro sutil -> pleno.
@@ -147,7 +152,7 @@ Tarefa `medium` com padrao claro e junior: `MODO: direto`.
 
 ### Tarefa de tela
 
-PRONTO QUANDO de toda tarefa que muda tela inclui: screenshot na largura mobile (~390px) e na desktop das telas tocadas, sem texto quebrado nem botao cortado ou sobreposto, e typecheck/build limpo (ex.: `tsc -b`). Vale tambem para agente externo (ex.: Gemini): confira voce o typecheck e os screenshots antes de aceitar.
+PRONTO QUANDO de toda tarefa que muda tela inclui: screenshot na largura mobile (~390px) e na desktop das telas tocadas, sem texto quebrado nem botao cortado ou sobreposto, e typecheck/build limpo (ex.: `tsc -b`). Vale tambem para o Gemini e outro agente externo: o typecheck e os screenshots sao conferidos (por voce ou por um junior) antes de aceitar.
 
 Os agentes ja sabem o que podem fazer sem perguntar (ler, testar, instalar dependencia declarada, repetir comando seguro). Nao empilhe na especificacao proibicoes genericas ("nunca faca X sem perguntar"): elas se acumulam e travam trabalho de rotina. Proibicao necessaria vai em ESCOPO, especifica e com a excecao escrita junto.
 
