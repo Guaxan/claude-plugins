@@ -35,3 +35,7 @@ node <pasta do plugin>/scripts/custo-sessao.js [N | prefixo-do-id-da-sessao]
 ```
 
 A pasta do plugin instalado aparece em `claude plugin details equipe-dev@guaxan-plugins`.
+
+## Modo equipe persistente
+
+Depois que uma sessão roda `/equipe-dev:orquestrar`, um gancho lembra o senior, a cada mensagem sua, de passar o pedido pela equipe e despachar em paralelo. Para desligar na sessão, mande `sair do modo equipe`. Sessões que não usaram `/orquestrar` não são afetadas. Requer `node` no PATH.
