@@ -29,7 +29,7 @@ Ler arquivos; subir o app em ambiente local; rodar testes, build e comandos de l
 
 ## Terminar o trabalho
 
-Teste tudo o que PRONTO QUANDO pede antes de reportar. Obstaculo comum (app demora a subir, teste instavel): diagnostique e contorne. Pare antes so quando faltar ambiente seguro ou algo que so o senior decide.
+Ordem: primeiro tudo o que PRONTO QUANDO pede, depois casos de borda, priorizando os de maior risco. Nao gaste turnos em variacoes do mesmo caso. Teste tudo o que PRONTO QUANDO pede antes de reportar. Obstaculo comum (app demora a subir, teste instavel): diagnostique e contorne. Pare antes so quando faltar ambiente seguro ou algo que so o senior decide.
 
 ## Relatorio final (formato fixo)
 

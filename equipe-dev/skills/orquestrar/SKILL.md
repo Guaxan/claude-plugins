@@ -13,6 +13,8 @@ Se esta sessao nao roda em Opus ou Fable, avise o usuario uma vez: senior e plen
 
 Trabalho delegado em cima de entendimento errado e o maior desperdicio da equipe. Antes de contratar qualquer agente:
 
+- **Veio um documento de ideia** (gerado por `/equipe-dev:planejar`, ex.: `docs/ideias/<nome>.md`): leia inteiro. Ele e o alinhamento: nao repita perguntas ja respondidas nele. Criterios de aceite viram PRONTO QUANDO; decisoes e alternativas descartadas viram JA DESCARTADO; fases guiam a divisao das tarefas; regras de negocio e fluxos vao para OBJETIVO e CONTEXTO. Se tiver PERGUNTAS EM ABERTO que afetam a fase que voce vai fazer, ou se o codigo contradiz o documento, pergunte ao usuario antes de contratar. Ao fechar, atualize o STATUS do documento com a fase entregue.
+
 - **Tarefa clara** (pedido especifico, criterio de pronto obvio, decisoes ja tomadas): siga direto para o planejamento.
 - **Tarefa grande ou ambigua** (varias partes, referencia visual/funcional em aberto, regra de negocio sem definicao, mais de um jeito razoavel de fazer): apresente ao usuario, curto:
   - plano: tarefas e quem faz cada uma;
@@ -36,6 +38,7 @@ Trabalho delegado em cima de entendimento errado e o maior desperdicio da equipe
 - Senior existe um so: voce. O nivel de cada papel (junior/pleno) e definido na contratacao por `model` + `effort`. Ex.: QA junior = `model: haiku` rodando roteiro pronto; QA pleno = padrao (Sonnet) desenhando casos de borda e escrevendo testes.
 - Nao ha hierarquia obrigatoria: contrate junior direto quando a tarefa for simples. O pleno tambem pode contratar junior para subtarefa mecanica dentro da tarefa dele e responde pela revisao dessa entrega. Junior, QA e DBA nao contratam ninguem.
 - Na duvida entre junior e pleno, escolha pelo risco: erro barato de detectar na revisao -> junior; erro sutil -> pleno.
+- Junior primeiro: antes de mandar ao pleno, veja se a tarefa (ou parte dela) e mecanica e cabe numa instrucao com exemplo pronto. Correcao pequena apontada pelo QA com `arquivo:linha` e o que esperado, ajuste repetitivo em varios arquivos, aplicar um padrao que voce ja mostrou: junior.
 - Pesquisa e exploracao dentro do modo equipe: junior ou pleno, nunca `general-purpose` ou `Explore` em Opus. Se usar `Explore`, passe `model: haiku`.
 - Nao contrate por contratar. Menos agentes, cada um com tarefa clara.
 
@@ -79,7 +82,9 @@ Esta skill autoriza e exige passar o parametro `effort` na chamada do Agent em t
 | `xhigh` | Raro. Problema que ja falhou em `high` |
 
 Regras:
-- `high` ou acima so com motivo concreto da tabela no campo ESFORCO. Sem motivo, `medium`.
+- `high` ou acima so com motivo concreto da tabela no campo ESFORCO. Sem motivo, `medium`. "Tarefa grande" nao e motivo: quebre a tarefa em vez de subir o esforco.
+- `low` nunca em tarefa que edita arquivo, de nenhum papel.
+- QA: `medium` por padrao. `high` so no QA final de ponta a ponta de um conjunto grande ou em fluxo de dinheiro/seguranca.
 - Junior nunca acima de `medium`. Se precisa de mais, a tarefa e de pleno.
 - `max` nao se usa em subagente.
 - Esforco e modelo ficam fixos no agente, inclusive quando retomado por SendMessage: para subir, contrate agente novo com especificacao corrigida.
@@ -115,6 +120,10 @@ MODO: direto | plano primeiro
 Use `MODO: plano primeiro` para pleno e DBA em tarefa `high` ou acima, ou que toque 3+ arquivos com decisao de design. O agente le o codigo e devolve so a abordagem, sem editar nada. Voce responde pelo SendMessage ao mesmo agente: "aprovado" ou correcao objetiva. So entao ele implementa. Abordagem errada pega aqui custa uma rodada; pega na revisao custa a implementacao inteira.
 
 Tarefa `medium` com padrao claro e junior: `MODO: direto`.
+
+### Tarefa de tela
+
+PRONTO QUANDO de toda tarefa que muda tela inclui: screenshot na largura mobile (~390px) e na desktop das telas tocadas, sem texto quebrado nem botao cortado ou sobreposto, e typecheck/build limpo (ex.: `tsc -b`). Vale tambem para agente externo (ex.: Gemini): confira voce o typecheck e os screenshots antes de aceitar.
 
 Os agentes ja sabem o que podem fazer sem perguntar (ler, testar, instalar dependencia declarada, repetir comando seguro). Nao empilhe na especificacao proibicoes genericas ("nunca faca X sem perguntar"): elas se acumulam e travam trabalho de rotina. Proibicao necessaria vai em ESCOPO, especifica e com a excecao escrita junto.
 
@@ -164,7 +173,8 @@ Escreva o relatorio para um leitor inteligente que nao viu o trabalho: nao viu a
 - Especificacao vaga ("melhore o modulo X") ou sem PERFIL.
 - Perfil que copia o AGENTS.md em vez de apontar para ele.
 - Reaproveitar agente para requisito novo.
-- `high` por padrao, ou Fable/Opus como modelo padrao de agente.
+- `high` por padrao (inclusive no QA), `low` em tarefa que edita arquivo, ou Fable/Opus como modelo padrao de agente.
+- Mandar ao pleno correcao mecanica que o junior faria.
 - Especificacao cheia de "nunca"/"pergunte antes" genericos.
 - Aprovar sem ler o diff.
 - Passar ao QA o relatorio do dev em vez da especificacao original.
